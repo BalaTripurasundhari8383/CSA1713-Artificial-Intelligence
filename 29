@@ -1,0 +1,23 @@
+% Initial facts
+:- dynamic fact/1.
+
+fact(a).
+fact(b).
+
+% Rules
+rule(c) :- fact(a), fact(b), \+ fact(c).
+rule(d) :- fact(c), \+ fact(d).
+rule(e) :- fact(d), \+ fact(e).
+
+% Forward chaining engine
+forward_chain :-
+    rule(X),
+    assertz(fact(X)),
+    write('Inferred: '), write(X), nl,
+    forward_chain.
+forward_chain :- !.  % Stop when no more rules apply
+
+% To run the program, use:
+% ?- forward_chain.
+% Then list the facts:
+% ?- listing(fact).
